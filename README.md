@@ -1,0 +1,1 @@
+Repository for all natural language processing exercises and notes while enrolled at Codeup.
