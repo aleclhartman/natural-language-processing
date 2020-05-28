@@ -1,3 +1,6 @@
+import numpy as np
+import pandas as pd
+
 from requests import get
 from bs4 import BeautifulSoup
 import os
@@ -41,7 +44,9 @@ def get_blog_articles(urls=[]):
         # appending dictionaries to list
         list_of_dicts.append(dictionary)
     
-    return list_of_dicts
+    df = pd.DataFrame(list_of_dicts)
+    
+    return df
 
 def get_news_articles(categories=[]):
     """
@@ -55,7 +60,7 @@ def get_news_articles(categories=[]):
     # iterate over the list of categories passed into the function
     for category in categories:
         
-        # natigate to the category page
+        # navigate to the category page
         url = "https://inshorts.com/en/read/" + category
         
         # establish headers
@@ -89,4 +94,6 @@ def get_news_articles(categories=[]):
             # append dictionary to list
             list_of_articles.append(dictionary)
             
-    return list_of_articles
+        df = pd.DataFrame(list_of_articles)
+
+    return df
