@@ -104,16 +104,16 @@ def remove_stopwords(lemmas_or_stems, extra_stopwords=[], exclude_stopwords=[]):
     
     return string_sans_stopwords
 
-def prep_article(dictionary):
+def prep_article(dictionary, key):
     """
-    This function accepts a dictionary representing a singular article containing a body of text as key named 
-    "original_content" to clean. 
+    This function accepts a dictionary representing a singular article containing a body of text, as specified 
+    in the key parameter, to clean. 
     The function then returns a dictionary containing the stemmed, lemmatized, and cleaned text in their 
     respective columns.
     """
     
     # indexing the original content
-    content = dictionary["original_content"]
+    content = dictionary[key]
     
     # running basic_clean function on content
     content = basic_clean(content)
