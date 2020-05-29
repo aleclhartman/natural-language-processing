@@ -53,10 +53,10 @@ def stem(string):
     # use stemmer to generate list of stems
     stems = [ps.stem(word) for word in string.split()]
     
-    # join stems to whitespace to return cohesive string
+    # join stems to whitespace to return a cohesive string
     cohesive_stems = " ".join(stems)
     
-    return cohesive_stems
+    return stems, cohesive_stems
 
 def lemmatize(string):
     """
@@ -69,8 +69,77 @@ def lemmatize(string):
     # use lemmatizer to generate list of stems
     lemmas = [wnl.lemmatize(word) for word in string.split()]
     
-    # join stems to whitespace to return cohesive string
+    # join lemmas to whitespace to return a cohesive string
     cohesive_lemmas = " ".join(lemmas)
     
-    return cohesive_lemmas
+    return lemmas, cohesive_lemmas
 
+def remove_stopwords(lemmas_or_stems, extra_stopwords=[], exclude_stopwords=[]):
+    """
+    This function accepts a list of text (lemmas_or_stems) and returns a string after removing stopwords.
+    Extra words can be added the standard english stopwords using the extra_stopwords parameter.
+    Words can be excluded from the standard english stopwords using the exclude_stopwords parameter.
+    """
+    
+    # create stopword list
+    stopword_list = stopwords.words("english")
+    
+    # extend extra_stopwords variable to stopwords if there are words in the parameter
+    if not extra_stopwords:
+        stopword_list
+    else:
+        stopword_list.extend(extra_stopwords)
+    
+    # remove exclude_stopwords variable from stopwords if there are words in the parameter
+    if not exclude_stopwords:
+        stopword_list
+    else:
+        stopword_list = [word for word in stopword_list if word not in exclude_stopwords]
+    
+    # list comprehension 
+    lemmas_or_stems_sans_stopwords = [word for word in lemmas_or_stems if word not in stopword_list]
+    
+    # join lemmas_or_stems_sans_stopwords to whitespace to return a cohesive string
+    string_sans_stopwords = " ".join(lemmas_or_stems_sans_stopwords)
+    
+    return string_sans_stopwords
+
+def prep_article(df):
+    """
+    This function accepts a DataFrame representing a singular article containing a body of text as column named 
+    "content" to clean. 
+    The function then returns a DataFrame containing the stemmed, lemmatized, and cleaned text in their 
+    respective columns.
+    """
+    
+    # rename content column
+    # df.rename(columns={"content": "original"}, inplace=True)
+    
+    # indexing the content from df.content
+    content = df.content[0]
+    
+    # running basic_clean function on content
+    content = basic_clean(content)
+    
+    # running tokenize function on content
+    content = tokenize(content)
+    
+    # running stem function on content
+    stem_list, stem_string = stem(content)
+    
+    # creating stemmed column in df
+    df["stemmed"] = stem_string
+    
+    # running lemmatize function on content
+    lemma_list, lemma_string = lemmatize(content)
+    
+    # creating lemmatized column in df
+    df["lemmatized"] = lemma_string
+    
+    # running remove_stopwords on lemma_list
+    cleaned_content = remove_stopwords(lemma_list)
+    
+    # creating cleaned column in df
+    df["clean"] = cleaned_content
+    
+    return df
