@@ -104,19 +104,16 @@ def remove_stopwords(lemmas_or_stems, extra_stopwords=[], exclude_stopwords=[]):
     
     return string_sans_stopwords
 
-def prep_article(df):
+def prep_article(dictionary):
     """
-    This function accepts a DataFrame representing a singular article containing a body of text as column named 
-    "content" to clean. 
-    The function then returns a DataFrame containing the stemmed, lemmatized, and cleaned text in their 
+    This function accepts a dictionary representing a singular article containing a body of text as key named 
+    "original_content" to clean. 
+    The function then returns a dictionary containing the stemmed, lemmatized, and cleaned text in their 
     respective columns.
     """
     
-    # rename content column
-    # df.rename(columns={"content": "original"}, inplace=True)
-    
-    # indexing the content from df.content
-    content = df.content[0]
+    # indexing the original content
+    content = dictionary["original_content"]
     
     # running basic_clean function on content
     content = basic_clean(content)
@@ -128,18 +125,29 @@ def prep_article(df):
     stem_list, stem_string = stem(content)
     
     # creating stemmed column in df
-    df["stemmed"] = stem_string
+    dictionary["stemmed"] = stem_string
     
     # running lemmatize function on content
     lemma_list, lemma_string = lemmatize(content)
     
     # creating lemmatized column in df
-    df["lemmatized"] = lemma_string
+    dictionary["lemmatized"] = lemma_string
     
     # running remove_stopwords on lemma_list
     cleaned_content = remove_stopwords(lemma_list)
     
     # creating cleaned column in df
-    df["clean"] = cleaned_content
+    dictionary["clean"] = cleaned_content
     
-    return df
+    return dictionary
+
+def prepare_article_data(list_of_dictionaries):
+    """
+    This function accepts a list of dictionaries and returns a list of dictionaries after applying the 
+    prep_article function to each article in the orignial dictionary.
+    """
+    
+    # list comprehension applying prep_article function to each dictionary
+    list_of_dictionaries = [prep_article(dictionary) for dictionary in list_of_dictionaries]
+    
+    return list_of_dictionaries

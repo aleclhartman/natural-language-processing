@@ -38,15 +38,15 @@ def get_blog_articles(urls=[]):
         # creating dictionary
         dictionary = {
             "title": title,
-            "content": content
+            "original_content": content
         }
 
         # appending dictionaries to list
         list_of_dicts.append(dictionary)
     
-    df = pd.DataFrame(list_of_dicts)
+    # df = pd.DataFrame(list_of_dicts)
     
-    return df
+    return list_of_dicts
 
 def get_news_articles(categories=[]):
     """
@@ -87,13 +87,13 @@ def get_news_articles(categories=[]):
             # create dictionary containing title, body, and category of article
             dictionary = {
                 "title": title,
-                "content": body,
+                "original_content": body,
                 "category": category
             }
             
             # append dictionary to list
             list_of_articles.append(dictionary)
             
-        df = pd.DataFrame(list_of_articles)
+        # df = pd.DataFrame(list_of_articles)
 
-    return df
+    return list_of_articles
