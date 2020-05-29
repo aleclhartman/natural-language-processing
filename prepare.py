@@ -76,7 +76,7 @@ def lemmatize(string):
 
 def remove_stopwords(lemmas_or_stems, extra_stopwords=[], exclude_stopwords=[]):
     """
-    This function accepts a list of text (lemmas_or_stems) and returns a string after removing stopwords.
+    This function accepts a list of strings (lemmas_or_stems) and returns a string after removing stopwords.
     Extra words can be added the standard english stopwords using the extra_stopwords parameter.
     Words can be excluded from the standard english stopwords using the exclude_stopwords parameter.
     """
@@ -90,7 +90,7 @@ def remove_stopwords(lemmas_or_stems, extra_stopwords=[], exclude_stopwords=[]):
     else:
         stopword_list.extend(extra_stopwords)
     
-    # remove exclude_stopwords variable from stopwords if there are words in the parameter
+    # remove words in exclude_stopwords variable from stopwords if there are words in the parameter
     if not exclude_stopwords:
         stopword_list
     else:
